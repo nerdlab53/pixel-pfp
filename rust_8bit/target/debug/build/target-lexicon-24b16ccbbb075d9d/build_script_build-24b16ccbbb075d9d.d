@@ -1,0 +1,8 @@
+/Users/himanshubhenwal/Desktop/projects/pixel-pfp/rust_8bit/target/debug/build/target-lexicon-24b16ccbbb075d9d/build_script_build-24b16ccbbb075d9d: /Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/build.rs /Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/src/data_model.rs /Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/src/triple.rs /Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/src/targets.rs
+
+/Users/himanshubhenwal/Desktop/projects/pixel-pfp/rust_8bit/target/debug/build/target-lexicon-24b16ccbbb075d9d/build_script_build-24b16ccbbb075d9d.d: /Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/build.rs /Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/src/data_model.rs /Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/src/triple.rs /Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/src/targets.rs
+
+/Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/build.rs:
+/Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/src/data_model.rs:
+/Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/src/triple.rs:
+/Users/himanshubhenwal/.cargo/registry/src/index.crates.io-6f17d22bba15001f/target-lexicon-0.12.16/src/targets.rs:

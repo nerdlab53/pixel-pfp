@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>8-Bit PFP Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div class="container">
+        <h1>8-Bit Profile Picture Generator</h1>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="prompt">Describe your profile picture:</label>
+                <input type="text" id="prompt" name="prompt" 
+                       placeholder="Example: cyberpunk robot with sunglasses" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="palette_size">Color Palette Size (8-256):</label>
+                <input type="range" id="palette_size" name="palette_size" 
+                       min="8" max="256" value="64" oninput="this.nextElementSibling.value = this.value">
+                <output>64</output>
+            </div>
+            
+            <div class="form-group checkbox">
+                <input type="checkbox" id="dithering" name="dithering">
+                <label for="dithering">Use dithering (creates texture)</label>
+            </div>
+            
+            <button type="submit">Generate 8-Bit PFP</button>
+        </form>
+        
+        {% if img_data %}
+        <div class="result">
+            <h2>Your 8-Bit PFP:</h2>
+            <img src="data:image/png;base64,{{ img_data }}" alt="Generated PFP">
+            <a href="data:image/png;base64,{{ img_data }}" download="my_8bit_pfp.png" class="download-btn">Download</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
