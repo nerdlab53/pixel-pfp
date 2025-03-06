@@ -5,3 +5,6 @@ transformers
 pillow
 gunicorn
 maturin
+colorama
+pyxelate
+skimage
