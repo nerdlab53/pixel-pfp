@@ -21,11 +21,11 @@ init()
 
 # ASCII art logo
 LOGO = f"""
-{Fore.CYAN}╔═══════════════════════════════════════╗
-║ {Fore.GREEN}░█▀▀░█▀▄░▀█▀░▀█▀  {Fore.MAGENTA}█▀█░█▀▀░█▀█  {Fore.YELLOW}█▀▀░█▀▀░█▀█ ║
-║ {Fore.GREEN}░█▀▀░█▀▄░░█░░░█░  {Fore.MAGENTA}█▀▀░█▀▀░█▀▀  {Fore.YELLOW}█░█░█▀▀░█░█ ║
-║ {Fore.GREEN}░▀▀▀░▀░▀░░▀░░░▀░  {Fore.MAGENTA}▀░░░▀░░░▀░░  {Fore.YELLOW}▀▀▀░▀▀▀░▀░▀ ║
-{Fore.CYAN}╚═══════════════════════════════════════╝
+{Fore.CYAN}╔═════════════════════════════════════════════╗
+║ {Fore.GREEN}░█▀▀█░█▀▄░▀█▀░▀█▀  {Fore.MAGENTA}█▀█░█▀▀░█▀█  {Fore.YELLOW}█▀▀░█▀▀░█▀█ ║
+║ {Fore.GREEN}░█▀▀█░█▀▄░░█░░░█░  {Fore.MAGENTA}█▀▀░█▀▀░█▀▀  {Fore.YELLOW}█░█░█▀▀░█░█ ║
+║ {Fore.GREEN}░▀▀▀▀░▀▀▀░▀▀▀░░▀░  {Fore.MAGENTA}▀░░░▀░░░▀░░  {Fore.YELLOW}▀▀▀░▀▀▀░▀░▀ ║
+{Fore.CYAN}╚═════════════════════════════════════════════╝
 {Style.RESET_ALL}"""
 
 # Import the Rust module if available, otherwise use a Python fallback
@@ -87,8 +87,42 @@ def generate_with_stable_diffusion(prompt, height=512, width=512, model_name="st
         # Use the simpler DiffusionPipeline approach for all models
         from diffusers import DiffusionPipeline
         
-        pipe = DiffusionPipeline.from_pretrained(model_name, **kwargs)
-        pipe = pipe.to(device)
+        # First try loading with quantization
+        try:
+            print(f"{Fore.BLUE}Attempting to load quantized model...{Style.RESET_ALL}")
+            # Try loading with 8-bit quantization first
+            from bitsandbytes.nn import Linear8bitLt
+            pipe = DiffusionPipeline.from_pretrained(
+                model_name, 
+                device_map="auto",
+                load_in_8bit=True,
+                **kwargs
+            )
+            print(f"{Fore.GREEN}✓ Loaded 8-bit quantized model{Style.RESET_ALL}")
+        except (ImportError, ValueError, Exception) as e:
+            print(f"{Fore.YELLOW}⚠ 8-bit quantization not available: {str(e)}{Style.RESET_ALL}")
+            
+            # Try 4-bit quantization if 8-bit failed
+            try:
+                from transformers import BitsAndBytesConfig
+                quantization_config = BitsAndBytesConfig(
+                    load_in_4bit=True,
+                    bnb_4bit_compute_dtype=torch.float16 if device == "cuda" else torch.float32
+                )
+                pipe = DiffusionPipeline.from_pretrained(
+                    model_name,
+                    quantization_config=quantization_config,
+                    device_map="auto",
+                    **kwargs
+                )
+                print(f"{Fore.GREEN}✓ Loaded 4-bit quantized model{Style.RESET_ALL}")
+            except (ImportError, ValueError, Exception) as e:
+                print(f"{Fore.YELLOW}⚠ 4-bit quantization not available: {str(e)}{Style.RESET_ALL}")
+                
+                # Fall back to standard loading without quantization
+                print(f"{Fore.BLUE}Falling back to standard model loading...{Style.RESET_ALL}")
+                pipe = DiffusionPipeline.from_pretrained(model_name, **kwargs)
+                pipe = pipe.to(device)
         
         # Enable attention slicing for memory efficiency
         if hasattr(pipe, "enable_attention_slicing"):

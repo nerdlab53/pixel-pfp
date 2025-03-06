@@ -6,5 +6,4 @@ pillow
 gunicorn
 maturin
 colorama
-pyxelate
 skimage
