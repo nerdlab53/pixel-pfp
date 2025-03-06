@@ -1,9 +1,8 @@
-```markdown
 🎮 Pixel-PFP 🕹️
 **Generate retro-styled 8-bit profile pictures from text prompts!**
 
 <p align="center">
-  <img src="https://via.placeholder.com/800x200/FF69B4/000000?text=PIXEL-PFP" alt="Pixel-PFP Banner">
+  <img src="./assets/banner.png" alt="Pixel-PFP Banner">
 </p>
 
 ## ✨ Features
@@ -100,4 +99,3 @@ MIT License - See [LICENSE](LICENSE) for details
 ---
 <p align="center">
 Made with ❤️ and a lot of pixels</p>
-```
