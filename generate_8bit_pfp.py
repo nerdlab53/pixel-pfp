@@ -16,7 +16,6 @@ from pyxelate import Pyx, Pal
 from skimage import io as skio
 import random
 
-# Initialize colorama for cross-platform colored terminal output
 init()
 
 # ASCII art logo
@@ -28,7 +27,7 @@ LOGO = f"""
 {Fore.CYAN}╚═════════════════════════════════════════════╝
 {Style.RESET_ALL}"""
 
-# Import the Rust module if available, otherwise use a Python fallback
+
 try:
     import rust_8bit
     use_rust = True
@@ -37,7 +36,7 @@ except ImportError:
     use_rust = False
     print(f"{Fore.YELLOW}⚠ Rust module not found, using Python fallback for 8-bit conversion{Style.RESET_ALL}")
 
-# Add this function to track elapsed time
+
 _start_time = time.time()
 def elapsed_time():
     """Return the elapsed time since the module was imported"""
@@ -65,18 +64,18 @@ def generate_with_stable_diffusion(prompt, height=512, width=512, model_name="st
     """Generate an image using HuggingFace's diffusers"""
     print(f"{Fore.BLUE}🖌️ Generating image for prompt: {prompt}{Style.RESET_ALL}")
     
-    # Determine device
+    
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"{Fore.BLUE}💻 Using device: {device}{Style.RESET_ALL}")
     
-    # Show a spinner during model loading
+    
     spinner = spinner_context("Loading pipeline components...")
     next(spinner)
     
-    # Record start time for model loading
+    
     load_start_time = time.time()
     
-    # Model loading parameters
+    
     kwargs = {
         "torch_dtype": torch.float16 if device == "cuda" else torch.float32,
         "cache_dir": os.environ.get("HF_HOME"),
@@ -119,16 +118,16 @@ def generate_with_stable_diffusion(prompt, height=512, width=512, model_name="st
             except (ImportError, ValueError, Exception) as e:
                 print(f"{Fore.YELLOW}⚠ 4-bit quantization not available: {str(e)}{Style.RESET_ALL}")
                 
-                # Fall back to standard loading without quantization
+                
                 print(f"{Fore.BLUE}Falling back to standard model loading...{Style.RESET_ALL}")
                 pipe = DiffusionPipeline.from_pretrained(model_name, **kwargs)
                 pipe = pipe.to(device)
         
-        # Enable attention slicing for memory efficiency
+        
         if hasattr(pipe, "enable_attention_slicing"):
             pipe.enable_attention_slicing()
         
-        # Enable xformers if available and using CUDA
+        
         if device == "cuda":
             try:
                 import xformers
@@ -139,22 +138,22 @@ def generate_with_stable_diffusion(prompt, height=512, width=512, model_name="st
                 print(f"{Fore.YELLOW}⚠ XFormers not available{Style.RESET_ALL}")
         
         spinner.close()
-        # Calculate the loading time
+        
         load_time = time.time() - load_start_time
         print(f"{Fore.GREEN}Loading model... Done! ({load_time:.2f}s){Style.RESET_ALL}")
         
-        # Generate the image
+        
         generator = torch.Generator(device=device).manual_seed(random.randint(0, 2147483647))
         
-        # Enhance the prompt for better results
+        
         enhanced_prompt = f"{prompt}, detailed, high quality"
         print(f"{Fore.BLUE}🔮 Processing prompt: {enhanced_prompt}{Style.RESET_ALL}")
         
-        # Show a spinner during image generation
+        
         spinner = spinner_context("Generating")
         next(spinner)
         
-        # Generate image using a consistent API
+        
         image = pipe(
             prompt=enhanced_prompt,
             height=height,
@@ -164,7 +163,7 @@ def generate_with_stable_diffusion(prompt, height=512, width=512, model_name="st
             generator=generator,
         ).images[0]
         
-        # Convert the PIL image to bytes
+        
         img_byte_arr = io.BytesIO()
         image.save(img_byte_arr, format='PNG')
         img_bytes = img_byte_arr.getvalue()
@@ -356,6 +355,8 @@ def convert_to_8bit_pyxelate(image, downsample_factor=8, palette_size=7, ditheri
 
 def generate_with_candle(prompt, height=512, width=512, model_id="stablediffusionapi/bluepencil-xl-v5"):
     """Generate an image using Candle"""
+
+    '''Have to fix this, and start running inferences from here'''
     print(f"{Fore.BLUE}🦀 Generating image with Candle for prompt:{Style.RESET_ALL} '{prompt}'")
     
     # Create a temporary file to store the output image
