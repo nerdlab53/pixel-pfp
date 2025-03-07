@@ -32,11 +32,7 @@ cargo install --path candle-components
 ## 🚀 Usage
 **Basic Command:**
 ```bash
-python generate.py --prompt "cyberpunk cat warrior" \
-                   --method rust \
-                   --palette-size 8 \
-                   --pixel-size 12 \
-                   --output avatar.png
+python generate_8bit_pfp.py  "your fav anime character" 
 ```
 
 **Options:**
